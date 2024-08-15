@@ -1,0 +1,6 @@
+numpy==2.0.1
+parsy==2.1
+PuLP==2.9.0
+jax==0.4.31
+matplotlib==3.9.1
+ott-jax==0.4.7
