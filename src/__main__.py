@@ -80,6 +80,8 @@ def run(args):
         cb.createURooms(args)
     if (args[1] == 'fileURooms'):
         cb.fileURooms(args)
+    if (args[1] == 'synthesizeFile'):
+        sb.synthesizeFile(args)
     if (args[1] == 'solveFile'):
         sb.solveFile(args)
     if (args[1] == 'solveExpSeqcomp'):

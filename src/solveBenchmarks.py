@@ -5,6 +5,83 @@ import solveOT as sot
 import solveLP as slp
 
 
+
+#args[1]: 'synthesizeFile'
+#args[2]: name of the directory
+#args[3]: number of benchmark
+
+def synthesizeFile(args):
+    path = f"benchmarks/{args[2]}"
+    numBench = int(args[3]) - 1
+    filename = f"main{numBench}.csv"
+    with open(f"{path}/{filename}") as f:
+        reader = csv.reader(f)
+        cmats = []
+        hierarchicalMap = []
+        for row in reader: 
+            tmp = []
+            hierarchicalDom = 0
+            hierarchicalCodom = 0
+            for cma in row: 
+                cma = cma.replace(' ', '')
+                with open(f"benchmarks/{args[2]}/cmat{cma}.csv") as g:
+                    reader = csv.reader(g)
+                    c = [list(map(int, row)) for row in reader]
+                    dom = len(c)
+                    codom = len(c[0])
+                    hierarchicalDom += dom
+                    hierarchicalCodom += codom
+                    cmat = cm.CMat(dom, codom, c)
+                    tmp.append(cmat)
+            cmats.append(tmp)
+            hierarchicalMap.append([ [ 0 for j in range(hierarchicalCodom)] for i in range(hierarchicalDom) ])
+    
+    start_time1 = time.perf_counter()
+    cmat = cmats[0][0]
+    shortestPathes = [ [ [] for j in range(cmat.codom) ] for i in range(cmat.dom) ]
+    for i in range(len(cmats)-1):
+        (cmat, shortestPathes) = cm.compWithCache(cmat, cmats[i+1], shortestPathes)
+
+    end_time1 = time.perf_counter()
+    
+    start_time2 = time.perf_counter()
+    (opMap, ansSH) = sot.synthesizeOT(cmat)
+    end_time2 = time.perf_counter()
+    start_time3 = time.perf_counter()
+    dom = cmat.dom
+    codom = cmat.codom
+    for i in range(dom):
+        for j in range(codom):
+            shortestRoots = shortestPathes[i][j]
+            currentdom = i
+            for k in range(len(shortestRoots)):
+                hierarchicalMap[k][currentdom][shortestRoots[k]] += opMap[i][j]
+                currentdom = shortestRoots[k]
+            hierarchicalMap[len(shortestRoots)][currentdom][j] += opMap[i][j]
+    # anscheck = cm.multiplication(hierarchicalMap, cmats)
+    # print(ansSH)
+    # print(anscheck)
+    end_time3 = time.perf_counter()
+    time1 = end_time1 - start_time1
+    time2 = end_time2 - start_time2
+    time3 = end_time3 - start_time3
+    print(time1 + time2 + time3)
+
+
+    # lp = slp.LP([[cmat]])
+    # exact_ans = slp.solveLP(lp, exact=True)[0]
+
+    start_time4 = time.perf_counter()
+    lp = slp.LP(cmats)
+    end_time4 = time.perf_counter()
+    ans = slp.solveLP(lp)
+    ansCompLP = ans[0]
+    time4 = (end_time4 - start_time4) + ans[1]
+    print(time4)
+    
+
+
+
             
 #args[1]: 'solveFile'
 #args[2]: name of the directory

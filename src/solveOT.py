@@ -6,6 +6,16 @@ from ott.geometry import geometry
 from ott.problems.linear import linear_problem
 from ott.solvers.linear import sinkhorn
 
+def synthesizeOT(cmat):
+    jcmat = jax.numpy.array(cmat.body)
+    geom = geometry.Geometry(jcmat)
+    ot_prob = linear_problem.LinearProblem(geom)
+    solver = sinkhorn.Sinkhorn(threshold=0.0001)
+    ot = solver(ot_prob)
+    return (ot.matrix, jnp.sum(ot.matrix * ot.geom.cost_matrix)) 
+
+
+
 # solve the monolithic OT with a given cost matrix cmat.
 # we assume the two distributions are uniform distributions, just for simplicity. 
 def solveOT(cmat):
