@@ -58,14 +58,14 @@ def synthesizeFile(args):
                 hierarchicalMap[k][currentdom][shortestRoots[k]] += opMap[i][j]
                 currentdom = shortestRoots[k]
             hierarchicalMap[len(shortestRoots)][currentdom][j] += opMap[i][j]
-    # anscheck = cm.multiplication(hierarchicalMap, cmats)
-    # print(ansSH)
-    # print(anscheck)
     end_time3 = time.perf_counter()
+    anscheck = cm.multiplication(hierarchicalMap, cmats)
+    print(ansSH)
+    print(anscheck)
     time1 = end_time1 - start_time1
     time2 = end_time2 - start_time2
     time3 = end_time3 - start_time3
-    print(time1 + time2 + time3)
+    # print(time1 + time2 + time3)
 
 
     # lp = slp.LP([[cmat]])
@@ -77,7 +77,7 @@ def synthesizeFile(args):
     ans = slp.solveLP(lp)
     ansCompLP = ans[0]
     time4 = (end_time4 - start_time4) + ans[1]
-    print(time4)
+    # print(time4)
 
     lp = slp.LP(cmats)
     exact_ans = slp.solveLP(lp, exact=True)[0]
