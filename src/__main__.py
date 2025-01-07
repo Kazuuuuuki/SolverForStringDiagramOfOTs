@@ -94,6 +94,16 @@ def run(args):
             numOfParcomp = (i+1)*30-1
             s = f'BRoomsP-{numOfParcomp}-100-100'
             sb.solveFile([0, 'solveFile', s, 1])
+    if (args[1] == 'synthesizeExpSeqcomp'):
+        for i in range(7):
+            numOfSeqcomp = (i+1)*30
+            s = f'BChains-{numOfSeqcomp}-100'
+            sb.synthesizeFile([0, 'solveFile', s, 1])
+    if (args[1] == 'synthesizeExpParcomp'):
+        for i in range(7):
+            numOfParcomp = (i+1)*30-1
+            s = f'BRoomsP-{numOfParcomp}-100-100'
+            sb.synthesizeFile([0, 'solveFile', s, 1])
     if (args[1] == 'solveForTable'):
         i = 1
         while(i <= 1):
@@ -121,6 +131,34 @@ def run(args):
         # UChain2 == UChains-799-10-200
             s = 'UChains-799-10-200'
             sb.solveFile([0, 'solveFile', s, i])
+            i += 1
+    if (args[1] == 'synthesizeForTable'):
+        i = 1
+        while(i <= 1):
+        # BRoom1 == BRooms-199-100-30-40
+            s = 'BRooms-199-100-30-40'
+            sb.solveFile([0, 'synthesizeFile', s, i])
+        # BRoom2 == BRoomsP-209-100-100
+            s = 'BRoomsP-209-100-100'
+            sb.solveFile([0, 'synthesizeFile', s, i])
+        # URoom1 == URooms-399-10-500-4-240-270-3
+            s = 'URooms-399-10-500-4-240-270-3'
+            sb.solveFile([0, 'synthesizeFile', s, i])
+        # URoom2 == URooms-599-10-500-4-240-270-3
+            s = 'URooms-599-10-500-4-240-270-3'
+            sb.solveFile([0, 'synthesizeFile', s, i])
+        # BChain1 == BChains-210-100
+            s = 'BChains-210-100'
+            sb.solveFile([0, 'synthesizeFile', s, i])
+        # BChain2 == BChains-400-100
+            s = 'BChains-400-100'
+            sb.solveFile([0, 'synthesizeFile', s, i])
+        # UChain1 == UChains-399-10-200
+            s = 'UChains-399-10-200'
+            sb.solveFile([0, 'synthesizeFile', s, i])
+        # UChain2 == UChains-799-10-200
+            s = 'UChains-799-10-200'
+            sb.solveFile([0, 'synthesizeFile', s, i])
             i += 1
     
 

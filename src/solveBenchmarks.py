@@ -78,6 +78,19 @@ def synthesizeFile(args):
     ansCompLP = ans[0]
     time4 = (end_time4 - start_time4) + ans[1]
     print(time4)
+
+    lp = slp.LP(cmats)
+    exact_ans = slp.solveLP(lp, exact=True)[0]
+    error1 = abs(ansSH-exact_ans)/exact_ans
+    error2 = abs(ansCompLP-exact_ans)/exact_ans
+    result = [[time1, time2, time3, time1+time2+time3, error1],
+              [time4, error2]
+    ]
+    print(result)
+    path = f"{path}/ans{numBench}.csv"
+    with open(path, mode='w') as f:
+        writer = csv.writer(f)
+        writer.writerows(result)
     
 
 
